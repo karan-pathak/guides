@@ -153,7 +153,7 @@ A `promise` is an object that may produce a value some time in the future: eithe
 
 Let's start by why are they needed? Because JavaScript is single threaded and some of the things like querying data from your backend server or some other computationally heavy tasks take time thus blocking the thread, so it is efficient to not block the thread while these computations or data fetch occur - `promises` to the rescue. They provide a solution by returning a proxy object for a value not necessarily known when the promise is created. Hence we can use this proxy object and move on with our code along the single thread. This object will be resolved to a value or possibly rejected at some point in the future, thus not hindering the performance.
 
-For example, we will declare a basic `promise` named myPromiseObject.
+For example, we will declare a basic `promise` named `myPromiseObject`.
 
 ```javascript
 let myPromiseObject = new Promise(function(resolve, reject) {
@@ -168,7 +168,7 @@ let myPromiseObject = new Promise(function(resolve, reject) {
 `Promises` come equipped with some methods out of which `then()` and `catch()` are mostly used. You can dive into details by checking out the reference links.
 `.then()` always returns a new promise, it’s possible to chain promises with precise control over how and where errors are handled.
 
-We will use myPromiseObject declared above to show you how `then()` is used:
+We will use `myPromiseObject` declared above to show you how `then()` is used:
 
 ```javascript
 myPromiseObject.then(function(value) {
