@@ -85,7 +85,7 @@ console.log(name) // ReferenceError: name is not defined
 
 if (person) {
   console.log(name) // ReferenceError: name is not defined
-  
+
   let name = 'Gob Bluth'; // "Gob Bluth"
 } else {
   console.log(name) // ReferenceError: name is not defined
@@ -147,6 +147,71 @@ console.log(i) // ReferenceError: i is not defined
 
 Using `let` will avoid accidentally leaking and changing the `i` variable from outside of the `for` block.
 
+## Promises
+
+A `promise` is an object that may produce a value some time in the future: either a resolved value, or a reason that it’s not resolved (e.g., a network error occurred). A promise may be in one of 3 possible states: `fulfilled`, `rejected`, or `pending`.
+
+Let's start by why are they needed? Because JavaScript is single threaded and some of the things like querying data from your backend server or some other computationally heavy tasks take time thus blocking the thread, so it is efficient to not block the thread while these computations or data fetch occur - `promises` to the rescue. They provide a solution by returning a proxy object for a value not necessarily known when the promise is created. Hence we can use this proxy object and move on with our code along the single thread. This object will be resolved to a value or possibly rejected at some point in the future, thus not hindering the performance.
+
+For example, we will declare a basic `promise` named myPromiseObject.
+
+```javascript
+let myPromiseObject = new Promise(function(resolve, reject) {
+  // on success
+  resolve(value);
+
+  // on failure
+  reject(reason);
+});
+```
+
+`Promises` come equipped with some methods out of which `then()` and `catch()` are mostly used. You can dive into details by checking out the reference links.
+`.then()` always returns a new promise, it’s possible to chain promises with precise control over how and where errors are handled.
+
+We will use myPromiseObject declared above to show you how `then()` is used:
+
+```javascript
+myPromiseObject.then(function(value) {
+  // on fulfillment
+}, function(reason) {
+  // on rejection
+});
+```
+
+Let's look at some code to see how they are used in ember:
+
+```javascript
+store.findRecord('person', 1).then(function(person) {
+  // Do something with person when promise is resolved.
+  person.set('name', 'Tom Dale');
+});
+```
+
+In the above snippet, `store.findRecord('person', 1)` can make a network request if the data is not
+already present in the store. Thus it returns a `promise` object which can resolve almost instantly if the data is present in store or it can take some time to resolve if the data is being fetched by a network request.
+
+Now we can come to part where these promises are chained:
+
+```javascript
+store.findRecord('person', 1).then(function(person) {
+
+  store.findRecord('post', 1) //query for another record.
+
+}).then(function(post){
+
+  store.findRecord('comment',1)
+
+}).then(function(comment){
+
+  store.findRecord('book', 1)
+
+}).catch(function(err){
+
+  //handle errors
+
+})
+```
+
 ### Resources
 
 For further reference you can consult Developer Network articles:
@@ -154,3 +219,4 @@ For further reference you can consult Developer Network articles:
 * [`var`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/var)
 * [`const`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/const)
 * [`let`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/let).
+* [`promise`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise).
