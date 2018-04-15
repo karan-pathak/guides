@@ -277,12 +277,12 @@ export default DS.Model.extend({
 });
 ```
 
-Now, suppose we want to add comments to an existing blogPost. We can do this in two ways, but for both of them, we will first need a reference to our existing blogPost as given below:
+Now, suppose we want to add comments to an existing blogPost. We can do this in two ways, but for both of them, we first need to look up a blog post that is already loaded in the store, using its id:
 
 ```javascript
 let myBlogPost = this.get('store').peekRecord('blog-post', 1);
 ```
-Now we can either set the `belongsTo` relationship in our new comment, or, update the blogPost's `hasMany` relationship. As you might observe, we don't need to set both `hasMany` and `belongsTo` for a record, ember data will do that for us.
+Now we can either set the `belongsTo` relationship in our new comment, or, update the blogPost's `hasMany` relationship. As you might observe, we don't need to set both `hasMany` and `belongsTo` for a record. Ember Data will do that for us.
 
 First, let's look at setting the `belongsTo` relationship in our new comment:
 
@@ -293,7 +293,7 @@ let comment = this.get('store').createRecord('comment', {
 comment.save();
 ```
 
-In the above snippet, we have referenced `myBlogPost` while creating the record. This will let ember know that the newly created comment belongs to `myBlogPost`.
+In the above snippet, we have referenced `myBlogPost` while creating the record. This will let Ember know that the newly created comment belongs to `myBlogPost`.
 This will create a new `comment` record and save it to the server. Ember Data will also update `myBlogPost` to include our newly created comment in its `comments` relationship.
 
 The second way of doing the same thing is to link the two records together by updating the blogPost's `hasMany` relationship as shown below:
