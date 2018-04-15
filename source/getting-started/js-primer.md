@@ -178,7 +178,7 @@ myPromiseObject.then(function(value) {
 });
 ```
 
-Let's look at some code to see how they are used in ember:
+Let's look at some code to see how they are used in Ember:
 
 ```javascript
 store.findRecord('person', 1).then(function(person) {
@@ -195,15 +195,17 @@ Now we can come to part where these promises are chained:
 ```javascript
 store.findRecord('person', 1).then(function(person) {
 
-  store.findRecord('post', 1) //query for another record.
+  return person.get('post'); //get all the posts linked with person.
 
-}).then(function(post){
+}).then(function(posts){
 
-  store.findRecord('comment',1)
+  myFirstPost = posts.get('firstObject'); //get the first post from collection.
+  return myFirstPost.get('comment'); //get all the comments linked with myFirstPost.
 
-}).then(function(comment){
+}).then(function(comments){
 
-  store.findRecord('book', 1)
+  // do something with comments
+  return store.findRecord('book', 1); //query for another record
 
 }).catch(function(err){
 
@@ -211,6 +213,8 @@ store.findRecord('person', 1).then(function(person) {
 
 })
 ```
+
+In the above code snippet, we assume that a person has many posts, and a post has many comments. So, `person.get('post')` will return a `promise` object and we chain the response with `then()` so that when it's resolved, we get the first object from the resolved collection and get comments from it with `myFirstPost.get('comment')` which will again return a `promise` object, thus continuing the chain.
 
 ### Resources
 
