@@ -149,11 +149,11 @@ Using `let` will avoid accidentally leaking and changing the `i` variable from o
 
 ## Promises
 
-A `promise` is an object that may produce a value some time in the future: either a resolved value, or a reason that it’s not resolved (e.g., a network error occurred). A promise may be in one of 3 possible states: `fulfilled`, `rejected`, or `pending`.
+A `Promise` is an object that may produce a value some time in the future: either a resolved value, or a reason that it’s not resolved (e.g., a network error occurred). A `Promise` may be in one of 3 possible states: `fulfilled`, `rejected`, or `pending`. Promises were introduced in ES6 JavaScript.
 
-Let's start by why are they needed? Because JavaScript is single threaded and some of the things like querying data from your backend server or some other computationally heavy tasks take time thus blocking the thread, so it is efficient to not block the thread while these computations or data fetch occur - `promises` to the rescue. They provide a solution by returning a proxy object for a value not necessarily known when the promise is created. Hence we can use this proxy object and move on with our code along the single thread. This object will be resolved to a value or possibly rejected at some point in the future, thus not hindering the performance.
+Why are Promises needed in Ember? JavaScript is single threaded, and some things like querying data from your backend server take time, thus blocking the thread. It is efficient to not block the thread while these computations or data fetches occur - Promises to the rescue! They provide a solution by returning a proxy object for a value not necessarily known when the `Promise` is created. While the `Promise` code is running, the rest of the code moves on.
 
-For example, we will declare a basic `promise` named `myPromiseObject`.
+For example, we will declare a basic `Promise` named `myPromiseObject`.
 
 ```javascript
 let myPromiseObject = new Promise(function(resolve, reject) {
@@ -165,8 +165,8 @@ let myPromiseObject = new Promise(function(resolve, reject) {
 });
 ```
 
-`Promises` come equipped with some methods out of which `then()` and `catch()` are mostly used. You can dive into details by checking out the reference links.
-`.then()` always returns a new promise, it’s possible to chain promises with precise control over how and where errors are handled.
+Promises come equipped with some methods, out of which `then()` and `catch()` are most commonly used. You can dive into details by checking out the reference links.
+`.then()` always returns a new `Promise`, so it’s possible to chain Promises with precise control over how and where errors are handled.
 
 We will use `myPromiseObject` declared above to show you how `then()` is used:
 
@@ -188,7 +188,7 @@ store.findRecord('person', 1).then(function(person) {
 ```
 
 In the above snippet, `store.findRecord('person', 1)` can make a network request if the data is not
-already present in the store. Thus it returns a `promise` object which can resolve almost instantly if the data is present in store or it can take some time to resolve if the data is being fetched by a network request.
+already present in the store. It returns a `Promise` object which can resolve almost instantly if the data is present in store, or it can take some time to resolve if the data is being fetched by a network request.
 
 Now we can come to part where these promises are chained:
 
@@ -214,7 +214,7 @@ store.findRecord('person', 1).then(function(person) {
 })
 ```
 
-In the above code snippet, we assume that a person has many posts, and a post has many comments. So, `person.get('post')` will return a `promise` object and we chain the response with `then()` so that when it's resolved, we get the first object from the resolved collection and get comments from it with `myFirstPost.get('comment')` which will again return a `promise` object, thus continuing the chain.
+In the above code snippet, we assume that a person has many posts, and a post has many comments. So, `person.get('post')` will return a `Promise` object. We chain the response with `then()` so that when it's resolved, we get the first object from the resolved collection. Then, we get comments from it with `myFirstPost.get('comment')` which will again return a `promise` object, thus continuing the chain.
 
 ### Resources
 
